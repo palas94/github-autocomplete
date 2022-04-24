@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+}
+.inputBox {
+  width: 320px;
+  height: 40px;
+  font-size: 20px;
+  border: 2px solid gray;
+  border-radius: 5px;
+}
