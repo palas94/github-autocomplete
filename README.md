@@ -1,70 +1,57 @@
-# Getting Started with Create React App
+# Installation and Running
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+Step 1 : Install nodeJS - https://nodejs.org/en/
 
-In the project directory, you can run:
+Step 2 :
+
+### `npm install`
+
+Step 3 :
+Add a .env file in the project root directory with contents -
+REACT_APP_API_KEY = '<Your-Github-Personal-Access-Token-Here>'
+
+Step 4 :
 
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+# Design Decisions - Explanation
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## No Redux?
 
-### `npm test`
+Redux is a state management system typically used when the application being constructed is large, and various, often unrelated components need access to the same information. Here the components are a simple search box and a dropdown, both of which can easily communicate with each other via props and callbacks.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Debounce
 
-### `npm run build`
+Debouncing was implemented so as to not make unnecessary API calls.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### `const searchGithubWithDebounce = useCallback(debounce(searchGithub, 500), []);`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+This calls the searchGithub function only after 500 ms. If there is less than 500ms gap between triggering the debounce function, it doesn't execute. This ensures that while the user is typing, unncessary API calls aren't made.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Caching
 
-### `npm run eject`
+Caching was implemented in utils/cache.js. Associated with each keyword is a list of users that Github returned and we stored in our localstorage. If this is found while searching, then no debounced call to searchGithub is made. Rather the component quickly returns the list of users from localStorage.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### `const userCache = getUserCache("USER_CACHE");`
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### `if (userCache.data[val]) {`
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### `setSuggestions(userCache.data[val].listOfUsers);`
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### `setApiState("done");`
 
-## Learn More
+### `} else {`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### `searchGithubWithDebounce(e.target.value);`
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### `}`
 
-### Code Splitting
+## Api States - Loading, Error and Done
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+The component maintains API states, displaying a loading spinner when the state is 'loading', an error message when the state is 'error' and the normal list component when the state is 'done'.
 
-### Analyzing the Bundle Size
+## User Interaction - both with Keyboard and Mouse
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The component is able to be scrolled both using keyboard (up/down buttons) and mouse scroll. User can select the relevant entry by either pressing 'Enter' or clicking on the entry.
