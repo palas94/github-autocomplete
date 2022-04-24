@@ -10,7 +10,8 @@ Step 2 :
 
 Step 3 :
 Add a .env file in the project root directory with contents -
-REACT_APP_API_KEY = '<Your-Github-Personal-Access-Token-Here>'
+
+### `REACT_APP_API_KEY = '<Your-Github-Personal-Access-Token-Here>'`
 
 Step 4 :
 
