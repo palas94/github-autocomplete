@@ -5,8 +5,6 @@ import { SuggestionList } from "./SuggestionList";
 import { debounce } from "lodash";
 import "./AutoComplete.css";
 
-// const my_token = "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";
-
 export const AutoComplete = (props) => {
   const [input, setInput] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
