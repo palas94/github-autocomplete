@@ -23,7 +23,6 @@ export const AutoComplete = (props) => {
         setApiState("error");
       })
       .then((res) => {
-        console.log(res.data.items);
         setUserListToCache(val, res.data.items);
         setSuggestions(res.data.items);
         setApiState("done");
@@ -51,7 +50,7 @@ export const AutoComplete = (props) => {
   };
 
   const onClick = (e) => {
-    setInput(e.target.children[1].children[0].innerText);
+    setInput(e);
     setSuggestions([]);
     setShowSuggestions(false);
     setSuggestionIndex(0);

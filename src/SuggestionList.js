@@ -16,7 +16,11 @@ export const SuggestionList = ({
             selectedClass = "active";
           }
           return (
-            <li key={suggestion.id} className={selectedClass} onClick={onClick}>
+            <li
+              key={suggestion.id}
+              className={selectedClass}
+              onClick={() => onClick(suggestion.login)}
+            >
               <div className="userContainer">
                 <img src={suggestion.avatar_url} alt="img" className="image" />
                 <div className="nameAndInfo">
