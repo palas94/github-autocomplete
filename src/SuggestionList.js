@@ -6,7 +6,10 @@ export const SuggestionList = ({
   showSuggestions,
   apiState,
   onClick,
+  errorComponent,
 }) => {
+  const renderErrorComponent = errorComponent();
+
   return apiState === "done" ? (
     suggestions.length > 0 ? (
       <ul className="dropDownContainer">
@@ -47,7 +50,7 @@ export const SuggestionList = ({
     </ul>
   ) : apiState === "error" ? (
     <ul className="dropDownContainer">
-      <li style={{ color: "red" }}>Error in Network Response</li>
+      <li style={{ color: "red" }}>{renderErrorComponent}</li>
     </ul>
   ) : (
     <></>

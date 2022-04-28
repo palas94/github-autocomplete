@@ -86,7 +86,6 @@ export const AutoComplete = (props) => {
 
   return (
     <div className="container">
-      <h1>AutoComplete Demo For DriveTrain</h1>
       <input
         type="text"
         value={input}
@@ -100,6 +99,7 @@ export const AutoComplete = (props) => {
         showSuggestions={showSuggestions}
         apiState={apiState}
         onClick={onClick}
+        errorComponent={props.errorComponent}
       />
     </div>
   );
